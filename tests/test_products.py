@@ -23,3 +23,5 @@ def test_product_sort_dropdown_list_visible(products_page: ProductsPage):
 def test_product_sort_dropdown_list_interaction(products_page: ProductsPage, value: str):
     products_page.check_selection_of_value_from_products_sorting_dropdown_list(value)
 
+def test_item_displaying(products_page: ProductsPage):
+    products_page.check_item_image_is_visible()

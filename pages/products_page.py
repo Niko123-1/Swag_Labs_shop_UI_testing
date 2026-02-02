@@ -3,6 +3,8 @@ from playwright.sync_api import Page, expect
 
 class ProductsPage(BasePage):
 
+    default_sort_value = 'Name (A to Z)'
+
     def __init__(self, page: Page):
         super().__init__(page)
 
@@ -76,7 +78,16 @@ class ProductsPage(BasePage):
         expect(self.products_title).to_be_visible()
         expect(self.products_title).to_have_text('Products')
 
-    def check_products_sort_visible(self):
+    def check_products_sorting_dropdown_list_visible(self):
         expect(self.products_sort).to_be_visible()
+        expect(self.products_sort).to_contain_text(self.default_sort_value)
+        self.products_sort.click()
+        self.page.wait_for_timeout(2000)
         expect(self.products_sort.locator("option")).to_contain_text(["Name (A to Z)", "Name (Z to A)", "Price (low to high)", "Price (high to low)"])
+
+    def check_selection_of_value_from_products_sorting_dropdown_list(self, value):
+        self.products_sort.select_option(value=value)
+        self.page.wait_for_timeout(2000)
+        expect(self.products_sort).to_contain_text(value)
+
 

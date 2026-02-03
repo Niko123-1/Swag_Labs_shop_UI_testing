@@ -3,6 +3,7 @@ from playwright.sync_api import Page, expect
 from pages.login_page import LoginPage
 from components.footer.footer_component import FooterComponent
 from components.navigation.burger_menu_component import BurgerMenuComponent
+from components.navigation.shopping_cart_component import ShoppingCartComponent
 
 class ProductsPage(BasePage):
 
@@ -10,10 +11,6 @@ class ProductsPage(BasePage):
 
     def __init__(self, page: Page):
         super().__init__(page)
-
-        #shopping cart locators
-        self.shopping_cart_link = page.locator('[data-test="shopping-cart-link"]')
-        self.shopping_cart_badge = page.locator('[data-test="shopping-cart-badge"]')
 
         #page title locator
         self.products_title = page.locator('[data-test="title"]')
@@ -28,19 +25,11 @@ class ProductsPage(BasePage):
 
         self.footer = FooterComponent(page)
         self.burger_menu = BurgerMenuComponent(page)
-
-    def check_shopping_cart_link_is_visible(self):
-        expect(self.shopping_cart_link).to_be_visible()
+        self.shopping_cart = ShoppingCartComponent(page)
 
     def check_shopping_cart_link_visit(self):
         pass
-
-    def check_shopping_cart_badge_is_visible(self, count: int):
-        expect(self.shopping_cart_badge).to_be_visible()
-        expect(self.shopping_cart_badge).to_have_text(f"{count}")
-
-    def check_shopping_cart_badge_is_not_visible(self):
-        expect(self.shopping_cart_badge).not_to_be_visible()
+        # add once sopping cart page is implemented!!!
 
     def check_title_is_visible(self):
         expect(self.products_title).to_be_visible()
@@ -66,13 +55,13 @@ class ProductsPage(BasePage):
     def check_adding_item_to_cart(self):
         self.add_to_cart_button.click()
         expect(self.remove_from_cart_button).to_be_visible()
-        self.check_shopping_cart_badge_is_visible(1)
+        self.shopping_cart.check_shopping_cart_badge_is_visible(1)
 
     def check_removing_item_from_cart(self):
         self.add_to_cart_button.click()
         self.remove_from_cart_button.click()
         expect(self.add_to_cart_button).to_be_visible()
-        self.check_shopping_cart_badge_is_not_visible()
+        self.shopping_cart.check_shopping_cart_badge_is_not_visible()
 
 
 

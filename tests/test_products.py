@@ -8,13 +8,12 @@ def test_check_burger_menu_interaction(products_page: ProductsPage):
     products_page.burger_menu.check_burger_menu_is_closing()
 
 def test_shopping_cart_interaction(products_page: ProductsPage):
-    products_page.check_shopping_cart_badge_is_not_visible()
-    products_page.check_shopping_cart_link_is_visible()
-    products_page.check_shopping_cart_link_visit()
+    products_page.shopping_cart.check_shopping_cart_badge_is_not_visible()
+    products_page.shopping_cart.check_shopping_cart_link_is_visible()
+    #products_page.check_shopping_cart_link_visit()
 
 def test_products_page_title_displaying(products_page: ProductsPage):
     products_page.check_title_is_visible()
-
 
 def test_product_sort_dropdown_list_visible(products_page: ProductsPage):
     products_page.check_products_sorting_dropdown_list_visible()

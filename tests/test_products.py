@@ -39,3 +39,15 @@ def test_add_item_to_cart(products_page: ProductsPage):
 
 def test_remove_item_from_cart(products_page: ProductsPage):
     products_page.check_removing_item_from_cart()
+
+def test_burger_menu_menu_all_items_option(products_page: ProductsPage):
+    products_page.check_burger_menu_all_items_option()
+
+def test_burger_menu_menu_about_option(products_page: ProductsPage):
+    products_page.check_burger_menu_about_option()
+
+def test_burger_menu_menu_reset_app_state_option(products_page: ProductsPage):
+    products_page.check_burger_menu_reset_app_state_option()
+
+def test_burger_menu_menu_logout_option(products_page: ProductsPage):
+    products_page.check_burger_menu_logout_option()

@@ -1,5 +1,6 @@
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
+from pages.login_page import LoginPage
 
 class ProductsPage(BasePage):
 
@@ -124,6 +125,36 @@ class ProductsPage(BasePage):
         self.remove_from_cart_button.click()
         expect(self.add_to_cart_button).to_be_visible()
         self.check_shopping_cart_badge_is_not_visible()
+
+    def check_burger_menu_about_option(self):
+        self.burger_menu_open.click(force=True)
+        expect(self.about_link).to_have_attribute("href", "https://saucelabs.com/")
+
+    def check_burger_menu_all_items_option(self):
+        self.burger_menu_open.click(force=True)
+        expect(self.all_items_link).to_have_attribute("href", "#")
+
+    def check_burger_menu_logout_option(self):
+        self.burger_menu_open.click(force=True)
+        expect(self.logout_link).to_have_attribute("href", "#")
+        self.logout_link.click()
+
+        login_page = LoginPage(self.page)
+        expect(login_page.username_input).to_be_visible()
+        expect(login_page.password_input).to_be_visible()
+        expect(login_page.login_button).to_be_visible()
+
+    def check_burger_menu_reset_app_state_option(self):
+        self.add_to_cart_button.click()
+        self.burger_menu_open.click(force=True)
+        expect(self.reset_app_state_link).to_have_attribute("href", "#")
+
+        self.reset_app_state_link.click()
+        expect(self.add_to_cart_button).to_be_visible()
+        self.check_shopping_cart_badge_is_not_visible()
+
+
+
 
     
 

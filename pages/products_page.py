@@ -1,6 +1,8 @@
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
 from pages.login_page import LoginPage
+from components.footer.footer_component import FooterComponent
+from components.navigation.burger_menu_component import BurgerMenuComponent
 
 class ProductsPage(BasePage):
 
@@ -8,14 +10,6 @@ class ProductsPage(BasePage):
 
     def __init__(self, page: Page):
         super().__init__(page)
-
-        #burger menu locators
-        self.burger_menu_open = page.locator('[data-test="open-menu"]')
-        self.all_items_link = page.locator('[data-test="inventory-sidebar-link"]')
-        self.about_link = page.locator('[data-test="about-sidebar-link"]')
-        self.logout_link = page.locator('[data-test="logout-sidebar-link"]')
-        self.reset_app_state_link = page.locator('[data-test="reset-sidebar-link"]')
-        self.burger_menu_close = page.locator('[data-test="close-menu"]')
 
         #shopping cart locators
         self.shopping_cart_link = page.locator('[data-test="shopping-cart-link"]')
@@ -32,38 +26,8 @@ class ProductsPage(BasePage):
         self.add_to_cart_button = page.locator('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]')
         self.remove_from_cart_button = page.locator('[data-test="remove-test.allthethings()-t-shirt-(red)"]')
 
-        #footer locators
-        self.social_twitter = page.locator('[data-test="social-twitter"]')
-        self.social_facebook = page.locator('[data-test="social-facebook"]')
-        self.social_linkedin = page.locator('[data-test="social-linkedin"]')
-        self.footer_copy = page.locator('[data-test="footer-copy"]')
-
-    def check_burger_menu_is_visible(self):
-        expect(self.burger_menu_open).to_be_visible()
-
-    def check_burger_menu_is_opening(self):
-        self.burger_menu_open.click(force=True)
-        expect(self.burger_menu_close).to_be_visible()
-
-    def check_burger_menu_list(self):
-        self.burger_menu_open.click(force=True)
-
-        items = [
-            (self.all_items_link, "All Items"),
-            (self.about_link, "About"),
-            (self.logout_link, "Logout"),
-            (self.reset_app_state_link, "Reset App State")
-        ]
-
-        for locator, expected_text in items:
-            expect(locator).to_be_visible()
-            expect(locator).to_contain_text(expected_text)
-
-    def check_burger_menu_is_closing(self):
-        self.burger_menu_open.click(force=True)
-        self.page.wait_for_timeout(2000)
-        self.burger_menu_close.click(force=True)
-        expect(self.burger_menu_open).to_be_visible()
+        self.footer = FooterComponent(page)
+        self.burger_menu = BurgerMenuComponent(page)
 
     def check_shopping_cart_link_is_visible(self):
         expect(self.shopping_cart_link).to_be_visible()
@@ -99,18 +63,6 @@ class ProductsPage(BasePage):
         #expect(self.item_image_link).to_be_visible()
         pass
 
-    def check_twitter_social_link(self):
-        expect(self.social_twitter).to_have_attribute("href", "https://twitter.com/saucelabs")
-
-    def check_facebook_social_link(self):
-        expect(self.social_facebook).to_have_attribute("href", "https://www.facebook.com/saucelabs")
-
-    def check_linkedin_social_link(self):
-        expect(self.social_linkedin).to_have_attribute("href", "https://www.linkedin.com/company/sauce-labs/")
-
-    def check_footer_info(self):
-        expect(self.footer_copy).to_have_text("© 2026 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy")
-
     def check_adding_item_to_cart(self):
         self.add_to_cart_button.click()
         expect(self.remove_from_cart_button).to_be_visible()
@@ -120,32 +72,6 @@ class ProductsPage(BasePage):
         self.add_to_cart_button.click()
         self.remove_from_cart_button.click()
         expect(self.add_to_cart_button).to_be_visible()
-        self.check_shopping_cart_badge_is_not_visible()
-
-    def check_burger_menu_about_option(self):
-        self.burger_menu_open.click(force=True)
-        expect(self.about_link).to_have_attribute("href", "https://saucelabs.com/")
-
-    def check_burger_menu_all_items_option(self):
-        self.burger_menu_open.click(force=True)
-        expect(self.all_items_link).to_have_attribute("href", "#")
-
-    def check_burger_menu_logout_option(self):
-        self.burger_menu_open.click(force=True)
-        expect(self.logout_link).to_have_attribute("href", "#")
-        self.logout_link.click()
-
-        login_page = LoginPage(self.page)
-        expect(login_page.username_input).to_be_visible()
-        expect(login_page.password_input).to_be_visible()
-        expect(login_page.login_button).to_be_visible()
-
-    def check_burger_menu_reset_app_state_option(self):
-        self.add_to_cart_button.click()
-        self.burger_menu_open.click(force=True)
-        expect(self.reset_app_state_link).to_have_attribute("href", "#")
-
-        self.reset_app_state_link.click()
         self.check_shopping_cart_badge_is_not_visible()
 
 

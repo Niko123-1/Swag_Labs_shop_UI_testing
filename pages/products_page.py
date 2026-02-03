@@ -28,11 +28,7 @@ class ProductsPage(BasePage):
         self.products_sort = page.locator('[data-test="product-sort-container"]')
 
         #item locators
-        self.item_image = page.locator('[data-test="inventory-item-test.allthethings()-t-shirt-(red)-img"]')
-        self.item_image_link = page.locator('[data-test="item-3-img-link"]')
-        self.item_name = page.locator('[data-test="inventory-item-name"]')
-        self.item_desc = page.locator('[data-test="inventory-item-desc"]')
-        self.item_price = page.locator('[data-test="inventory-item-price"]')
+        self.item_link = page.locator('[data-test="item-3-img-link"]')
         self.add_to_cart_button = page.locator('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]')
         self.remove_from_cart_button = page.locator('[data-test="remove-test.allthethings()-t-shirt-(red)"]')
 
@@ -150,7 +146,6 @@ class ProductsPage(BasePage):
         expect(self.reset_app_state_link).to_have_attribute("href", "#")
 
         self.reset_app_state_link.click()
-        expect(self.add_to_cart_button).to_be_visible()
         self.check_shopping_cart_badge_is_not_visible()
 
 

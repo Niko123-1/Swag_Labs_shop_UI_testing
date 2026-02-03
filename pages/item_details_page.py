@@ -2,6 +2,7 @@ from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
 import re
 from pages.products_page import ProductsPage
+from components.footer.footer_component import FooterComponent
 
 
 class ItemDetailsPage(BasePage):
@@ -20,6 +21,8 @@ class ItemDetailsPage(BasePage):
         self.add_to_cart_button = page.locator('[data-test="add-to-cart"]')
         self.remove_from_cart_button = page.locator('[data-test="remove"]')
         self.back_to_products_link = page.locator('[data-test="back-to-products"]')
+
+        self.footer = FooterComponent(page)
 
     def check_item_name(self):
         expect(self.item_name).to_have_text('Test.allTheThings() T-Shirt (Red)')

@@ -1,4 +1,3 @@
-import pytest
 from pages.item_details_page import ItemDetailsPage
 
 def test_item_displaying(item_detail_page: ItemDetailsPage):
@@ -14,3 +13,9 @@ def test_remove_item_from_cart(item_detail_page: ItemDetailsPage):
 
 def test_go_back_to_products(item_detail_page: ItemDetailsPage):
     item_detail_page.check_back_to_products_link()
+
+def test_page_footer(item_detail_page: ItemDetailsPage):
+    item_detail_page.footer.check_footer_info()
+    item_detail_page.footer.check_twitter_social_link()
+    item_detail_page.footer.check_linkedin_social_link()
+    item_detail_page.footer.check_facebook_social_link()

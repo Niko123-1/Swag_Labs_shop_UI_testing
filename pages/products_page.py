@@ -1,5 +1,6 @@
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
+from pages.login_page import LoginPage
 
 class ProductsPage(BasePage):
 
@@ -27,11 +28,7 @@ class ProductsPage(BasePage):
         self.products_sort = page.locator('[data-test="product-sort-container"]')
 
         #item locators
-        self.item_image = page.locator('[data-test="inventory-item-test.allthethings()-t-shirt-(red)-img"]')
-        self.item_image_link = page.locator('[data-test="item-3-img-link"]')
-        self.item_name = page.locator('[data-test="inventory-item-name"]')
-        self.item_desc = page.locator('[data-test="inventory-item-desc"]')
-        self.item_price = page.locator('[data-test="inventory-item-price"]')
+        self.item_link = page.locator('[data-test="item-3-img-link"]')
         self.add_to_cart_button = page.locator('[data-test="add-to-cart-test.allthethings()-t-shirt-(red)"]')
         self.remove_from_cart_button = page.locator('[data-test="remove-test.allthethings()-t-shirt-(red)"]')
 
@@ -124,6 +121,35 @@ class ProductsPage(BasePage):
         self.remove_from_cart_button.click()
         expect(self.add_to_cart_button).to_be_visible()
         self.check_shopping_cart_badge_is_not_visible()
+
+    def check_burger_menu_about_option(self):
+        self.burger_menu_open.click(force=True)
+        expect(self.about_link).to_have_attribute("href", "https://saucelabs.com/")
+
+    def check_burger_menu_all_items_option(self):
+        self.burger_menu_open.click(force=True)
+        expect(self.all_items_link).to_have_attribute("href", "#")
+
+    def check_burger_menu_logout_option(self):
+        self.burger_menu_open.click(force=True)
+        expect(self.logout_link).to_have_attribute("href", "#")
+        self.logout_link.click()
+
+        login_page = LoginPage(self.page)
+        expect(login_page.username_input).to_be_visible()
+        expect(login_page.password_input).to_be_visible()
+        expect(login_page.login_button).to_be_visible()
+
+    def check_burger_menu_reset_app_state_option(self):
+        self.add_to_cart_button.click()
+        self.burger_menu_open.click(force=True)
+        expect(self.reset_app_state_link).to_have_attribute("href", "#")
+
+        self.reset_app_state_link.click()
+        self.check_shopping_cart_badge_is_not_visible()
+
+
+
 
     
 

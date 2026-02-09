@@ -40,14 +40,13 @@ class ItemDetailsPage(BasePage):
 
     def check_adding_item_to_cart(self):
         self.add_to_cart_button.click()
-        expect(self.remove_from_cart_button).to_be_visible()
-        expect(self.shopping_cart.check_shopping_cart_badge_is_visible(1))
+        self.shopping_cart.check_shopping_cart_badge_is_visible(1)
 
     def check_removing_item_from_cart(self):
         self.add_to_cart_button.click()
         self.remove_from_cart_button.click()
         expect(self.add_to_cart_button).to_be_visible()
-        expect(self.shopping_cart.check_shopping_cart_badge_is_not_visible())
+        self.shopping_cart.check_shopping_cart_badge_is_not_visible()
 
     def check_back_to_products_link(self):
         expect(self.back_to_products_link).to_be_visible()

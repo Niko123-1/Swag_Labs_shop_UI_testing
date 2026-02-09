@@ -1,6 +1,5 @@
 from pages.base_page import BasePage
 from playwright.sync_api import Page, expect
-from pages.login_page import LoginPage
 from components.footer.footer_component import FooterComponent
 from components.navigation.burger_menu_component import BurgerMenuComponent
 from components.navigation.shopping_cart_component import ShoppingCartComponent
@@ -26,6 +25,7 @@ class ProductsPage(BasePage):
         self.footer = FooterComponent(page)
         self.burger_menu = BurgerMenuComponent(page)
         self.shopping_cart = ShoppingCartComponent(page)
+
 
     def check_shopping_cart_link_visit(self):
         pass

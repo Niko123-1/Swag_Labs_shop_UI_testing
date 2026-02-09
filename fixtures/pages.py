@@ -45,9 +45,16 @@ def item_details_page(products_page: ProductsPage, page: Page) -> ItemDetailsPag
 
 
 @pytest.fixture
-def shopping_cart_page(item_details_page: ItemDetailsPage, page: Page) -> ShoppingCartPage:
+def not_empty_shopping_cart_page(item_details_page: ItemDetailsPage, page: Page) -> ShoppingCartPage:
     """Фикстура страницы корзины"""
     item_details_page.add_to_cart_button.click()
+    item_details_page.shopping_cart.shopping_cart_link.click()
+    page.wait_for_url("**/cart.html")
+    return ShoppingCartPage(page=page)
+
+@pytest.fixture
+def empty_shopping_cart_page(item_details_page: ItemDetailsPage, page: Page) -> ShoppingCartPage:
+    """Фикстура страницы корзины"""
     item_details_page.shopping_cart.shopping_cart_link.click()
     page.wait_for_url("**/cart.html")
     return ShoppingCartPage(page=page)

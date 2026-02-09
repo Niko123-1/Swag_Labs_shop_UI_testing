@@ -42,7 +42,7 @@ class ShoppingCartPage(BasePage):
         expect(self.shopping_cart_quantity_label).to_have_text('QTY')
         expect(self.shopping_cart_desc_label).to_have_text('Description')
 
-    def check_cart_details(self):
+    def check_shopping_cart_details(self):
         expect(self.shopping_cart_item_quantity).to_have_text('1')
         expect(self.shopping_cart_item_name).to_have_text('Test.allTheThings() T-Shirt (Red)')
         expect(self.shopping_cart_item_desc).to_have_text(self.item_description)
@@ -51,6 +51,7 @@ class ShoppingCartPage(BasePage):
 
     def check_continue_shopping_action(self):
         self.shopping_cart_continue_shopping_button.click()
+        self.page.wait_for_timeout(2000)
         expect(self.products_page.products_title).to_be_visible()
         expect(self.shopping_cart.shopping_cart_badge).to_have_text('1')
         expect(self.products_page.remove_from_cart_button).to_be_visible()
@@ -64,3 +65,21 @@ class ShoppingCartPage(BasePage):
         self.shopping_cart_remove_button.click()
         self.shopping_cart.check_shopping_cart_badge_is_not_visible()
         expect(self.shopping_cart_item_price).not_to_be_visible()
+
+    def check_empty_shopping_cart(self):
+        expect(self.shopping_cart_item_quantity).not_to_be_visible()
+        self.shopping_cart.check_shopping_cart_badge_is_not_visible()
+        expect(self.shopping_cart_item_name).not_to_be_visible()
+        expect(self.shopping_cart_item_desc).not_to_be_visible()
+        expect(self.shopping_cart_item_price).not_to_be_visible()
+        self.footer.check_footer_info()
+        self.footer.check_twitter_social_link()
+        self.footer.check_linkedin_social_link()
+        self.footer.check_facebook_social_link()
+        self.burger_menu.check_burger_menu_list()
+        self.burger_menu.check_burger_menu_is_opening()
+        self.burger_menu.check_burger_menu_is_closing()
+        self.shopping_cart.check_shopping_cart_link_is_visible()
+        self.shopping_cart_continue_shopping_button.click()
+        expect(self.products_page.products_title).to_be_visible()
+

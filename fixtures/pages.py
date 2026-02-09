@@ -1,5 +1,7 @@
 import pytest
 from playwright.sync_api import Page
+
+from pages.checkout_information_page import CheckoutInformationPage
 from pages.products_page import ProductsPage
 from pages.login_page import LoginPage
 from pages.item_details_page import ItemDetailsPage
@@ -46,7 +48,7 @@ def item_details_page(products_page: ProductsPage, page: Page) -> ItemDetailsPag
 
 @pytest.fixture
 def not_empty_shopping_cart_page(item_details_page: ItemDetailsPage, page: Page) -> ShoppingCartPage:
-    """Фикстура страницы корзины"""
+    """Фикстура страницы не пустой корзины"""
     item_details_page.add_to_cart_button.click()
     item_details_page.shopping_cart.shopping_cart_link.click()
     page.wait_for_url("**/cart.html")
@@ -54,7 +56,14 @@ def not_empty_shopping_cart_page(item_details_page: ItemDetailsPage, page: Page)
 
 @pytest.fixture
 def empty_shopping_cart_page(item_details_page: ItemDetailsPage, page: Page) -> ShoppingCartPage:
-    """Фикстура страницы корзины"""
+    """Фикстура страницы пустой корзины"""
     item_details_page.shopping_cart.shopping_cart_link.click()
     page.wait_for_url("**/cart.html")
     return ShoppingCartPage(page=page)
+
+@pytest.fixture
+def checkout_information_page(not_empty_shopping_cart_page: ShoppingCartPage, page: Page) -> CheckoutInformationPage:
+    """Фикстура страницы информации о заказе"""
+    not_empty_shopping_cart_page.shopping_cart_checkout_button.click()
+    page.wait_for_url("**/checkout-step-one.html")
+    return CheckoutInformationPage(page=page)

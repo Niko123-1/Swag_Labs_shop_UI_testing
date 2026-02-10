@@ -1,6 +1,7 @@
 import pytest
 from pages.shopping_cart_page import ShoppingCartPage
 
+@pytest.mark.shoppingcart
 class TestShoppingCart:
 
     def test_check_burger_menu_interaction(self, not_empty_shopping_cart_page: ShoppingCartPage):

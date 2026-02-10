@@ -1,5 +1,8 @@
+import pytest
+
 from pages.item_details_page import ItemDetailsPage
 
+@pytest.mark.item
 class TestItemDetails:
 
     def test_item_displaying(self, item_details_page: ItemDetailsPage):

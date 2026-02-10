@@ -1,6 +1,7 @@
 import pytest
 from pages.products_page import ProductsPage
 
+@pytest.mark.products
 class TestProducts:
 
     def test_check_burger_menu_interaction(self, products_page: ProductsPage):

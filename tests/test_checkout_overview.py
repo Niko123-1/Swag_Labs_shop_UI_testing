@@ -1,8 +1,9 @@
-from tools.faker import fake
+import allure
 
 from pages.checkout_overview_page import CheckoutOverviewPage
 import pytest
 
+@pytest.mark.checkout
 class TestCheckoutOverview:
 
     def test_checkout_finish(self, checkout_overview_page: CheckoutOverviewPage):

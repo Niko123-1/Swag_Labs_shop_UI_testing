@@ -1,11 +1,14 @@
 import pytest
 from playwright.sync_api import Page
 
+from pages.checkout_complete_page import CheckoutCompletePage
 from pages.checkout_information_page import CheckoutInformationPage
 from pages.products_page import ProductsPage
 from pages.login_page import LoginPage
 from pages.item_details_page import ItemDetailsPage
 from pages.shopping_cart_page import ShoppingCartPage
+from tools.faker import fake
+from pages.checkout_overview_page import CheckoutOverviewPage
 
 
 @pytest.fixture
@@ -67,3 +70,18 @@ def checkout_information_page(not_empty_shopping_cart_page: ShoppingCartPage, pa
     not_empty_shopping_cart_page.shopping_cart_checkout_button.click()
     page.wait_for_url("**/checkout-step-one.html")
     return CheckoutInformationPage(page=page)
+
+@pytest.fixture
+def checkout_overview_page(checkout_information_page: CheckoutInformationPage, page: Page) -> CheckoutOverviewPage:
+    """Фикстура страницы завершения заказа"""
+    checkout_information_page.fill_checkout_information_form(first_name=fake.first_name(),last_name=fake.last_name(),postal_code=fake.postal_code())
+    checkout_information_page.click_continue_button()
+    page.wait_for_url("**/checkout-step-two.html")
+    return CheckoutOverviewPage(page=page)
+
+@pytest.fixture
+def checkout_complete_page(checkout_overview_page: CheckoutOverviewPage, page: Page) -> CheckoutCompletePage:
+    """Фикстура страницы завершения заказа"""
+    checkout_overview_page.finish_button_click()
+    page.wait_for_url("**/checkout-complete.html")
+    return CheckoutCompletePage(page=page)

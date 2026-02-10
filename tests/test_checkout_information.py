@@ -1,16 +1,18 @@
+from tools.faker import fake
+
 from pages.checkout_information_page import CheckoutInformationPage
 import pytest
 
 class TestCheckoutInformation:
 
-    def test_checkout_information_form_fill_in(self, checkout_information_page: CheckoutInformationPage):
-        checkout_information_page.check_checkout_information_form_fill_in()
+    def test_checkout_information_form(self, checkout_information_page: CheckoutInformationPage):
+        checkout_information_page.check_checkout_information_form()
 
     def test_checkout_continue(self, checkout_information_page: CheckoutInformationPage):
-        checkout_information_page.check_checkout_continue()
+        checkout_information_page.click_continue_button()
 
     def test_checkout_cancel(self, checkout_information_page: CheckoutInformationPage):
-        checkout_information_page.check_checkout_cancel()
+        checkout_information_page.click_cancel_button()
 
     def test_check_burger_menu_interaction(self, checkout_information_page: CheckoutInformationPage):
         checkout_information_page.burger_menu.check_burger_menu_is_visible()
@@ -37,7 +39,13 @@ class TestCheckoutInformation:
         checkout_information_page.footer.check_facebook_social_link()
 
     @pytest.mark.parametrize("first_name, last_name, postal_code, error_message",
-                             [("", "", "", "Error: First Name is required"),])
+                             [("", "", "", "Error: First Name is required"),
+                              (fake.first_name(), "","","Error: Last Name is required"),
+                              (fake.first_name(), fake.last_name(), "", "Error: Postal Code is required")])
     def test_checkout_continue_with_out_required_info(self, checkout_information_page: CheckoutInformationPage, first_name, last_name, postal_code, error_message):
-        checkout_information_page.check_checkout_information_form_fill_in(firstname=first_name,lastname=last_name,postalcode=postal_code)
-        checkout_information_page.checkout_continue_button()
+        checkout_information_page.fill_checkout_information_form(first_name=first_name,last_name=last_name,postal_code=postal_code)
+        checkout_information_page.check_continue_with_out_required_fields(error_message)
+
+    def test_checkout_successful_continue(self, checkout_information_page: CheckoutInformationPage):
+        checkout_information_page.check_successful_checkout_continue()
+        # add once checkout review page is delivered
